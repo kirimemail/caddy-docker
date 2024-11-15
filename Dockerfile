@@ -1,0 +1,34 @@
+FROM alpine:3.20 AS cert-builder
+RUN apk add -U --no-cache ca-certificates
+
+FROM golang:1.23-alpine AS caddy-builder
+RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+RUN xcaddy build v2.8.4 \
+    --with github.com/caddy-dns/cloudflare \ 
+    --with github.com/caddy-dns/powerdns \
+    --with github.com/ss098/certmagic-s3 \
+    --with github.com/pberkel/caddy-storage-redis \
+    --with github.com/zhangjiayin/caddy-mysql-storage \
+    --with github.com/yroc92/postgres-storage \
+    --with github.com/mholt/caddy-ratelimit \
+    --with github.com/kirsch33/realip \
+    --with github.com/greenpau/caddy-security \
+    --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
+    --output /usr/local/bin/caddy
+
+# Image starts here
+FROM scratch
+LABEL maintainer="Gamal Abdul Nasser <gamalanpro@gmail.com>"
+
+EXPOSE 80 443 2019
+ENV XDG_CONFIG_HOME=/config
+ENV XDG_DATA_HOME=/data
+
+WORKDIR /
+
+COPY --from=cert-builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=caddy-builder /usr/local/bin/caddy /bin/caddy
+
+ENTRYPOINT ["/bin/caddy"]
+
+CMD ["docker-proxy"]
