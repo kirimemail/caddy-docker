@@ -1,9 +1,9 @@
-FROM alpine:3.20 AS cert-builder
+FROM alpine:3 AS cert-builder
 RUN apk add -U --no-cache ca-certificates
 
-FROM golang:1.23-alpine AS caddy-builder
+FROM golang:1.25-alpine AS caddy-builder
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-RUN xcaddy build v2.8.4 \
+RUN xcaddy build v2.10.2 \
     --with github.com/caddy-dns/cloudflare \ 
     --with github.com/caddy-dns/powerdns \
     --with github.com/ss098/certmagic-s3 \
