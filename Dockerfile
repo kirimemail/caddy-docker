@@ -5,7 +5,7 @@ FROM golang:1.25-alpine AS caddy-builder
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 RUN xcaddy build v2.10.2 \
     --with github.com/caddy-dns/cloudflare \ 
-    --with github.com/caddy-dns/powerdns \
+    ##--with github.com/caddy-dns/powerdns \
     --with github.com/ss098/certmagic-s3 \
     --with github.com/pberkel/caddy-storage-redis \
     --with github.com/zhangjiayin/caddy-mysql-storage \
