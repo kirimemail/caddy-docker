@@ -3,7 +3,7 @@ RUN apk add -U --no-cache ca-certificates
 
 FROM golang:1.26-alpine AS caddy-builder
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-RUN xcaddy build v2.11.2 \
+RUN xcaddy build v2.11.4 \
     --with github.com/caddy-dns/cloudflare \ 
     --with github.com/caddy-dns/powerdns \
     --with github.com/ss098/certmagic-s3 \
@@ -17,6 +17,7 @@ RUN xcaddy build v2.11.2 \
     --with github.com/mentimeter/caddy-storage-cf-kv \
     --with github.com/kirsch33/realip \
     --with github.com/greenpau/caddy-security \
+    --with github.com/hslatman/caddy-crowdsec-bouncer \
     --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
     --output /usr/local/bin/caddy
 
