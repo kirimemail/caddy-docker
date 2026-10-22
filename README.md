@@ -6,8 +6,10 @@ Custom [Caddy](https://caddyserver.com/) Docker image built with [xcaddy](https:
 
 | Tag | Base | Description |
 |-----|------|-------------|
-| `latest` | `scratch` | Minimal image with ca-certificates only |
-| `alpine` | `alpine:3` | Alpine-based image with shell and package manager |
+| `latest` | `scratch` | Minimal image with ca-certificates only, latest Caddy release |
+| `2.11.7` | `scratch` | Pinned Caddy v2.11.7, minimal image |
+| `alpine` | `alpine:3` | Alpine-based image with shell and package manager, latest Caddy release |
+| `2.11.7-alpine` | `alpine:3` | Pinned Caddy v2.11.7, Alpine-based image |
 
 ## Bundled Plugins
 
@@ -60,7 +62,7 @@ services:
 
 ## Caddy Version
 
-- **Caddy**: v2.11.4
+- **Caddy**: v2.11.7
 - **Go builder**: golang:1.26-alpine
 - **xcaddy**: latest
 
