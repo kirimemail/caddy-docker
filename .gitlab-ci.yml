@@ -16,9 +16,9 @@ variables:
     - docker buildx create --use --name builder
       --driver docker-container || docker buildx use builder
     - docker buildx inspect --bootstrap
-    - echo "$CI_REGISTRY_PASSWORD" | docker login
-      -u "$CI_REGISTRY_USER" --password-stdin
-      "$CI_REGISTRY"
+    - echo "$CI_DEPLOY_TOKEN" | docker login
+      -u "$CI_DEPLOY_USER" --password-stdin
+      "$DOCKER_REGISTRY"
   script:
     - docker buildx build
       --platform linux/amd64,linux/arm64
