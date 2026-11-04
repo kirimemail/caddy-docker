@@ -5,24 +5,20 @@ variables:
   DOCKER_REGISTRY: docker.kirim.email
   IMAGE: $DOCKER_REGISTRY/$CI_PROJECT_PATH
   DOCKER_BUILDKIT: "1"
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: ""
 
 .docker-build:
   stage: build
   tags: [shared]
-  image: docker:27
-  services:
-    - name: docker:27-dind
-      alias: docker
+  image: docker:24
+  timeout: 1h
   before_script:
     - docker version
     - docker buildx create --use --name builder
       --driver docker-container || docker buildx use builder
     - docker buildx inspect --bootstrap
-    - echo "$CI_DEPLOY_TOKEN" | docker login
-      -u "$CI_DEPLOY_USER" --password-stdin
-      "$DOCKER_REGISTRY"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login
+      -u "$CI_REGISTRY_USER" --password-stdin
+      "$CI_REGISTRY"
   script:
     - docker buildx build
       --platform linux/amd64,linux/arm64
