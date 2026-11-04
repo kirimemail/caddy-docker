@@ -4,21 +4,21 @@ RUN apk add -U --no-cache ca-certificates
 FROM golang:1.26-alpine AS caddy-builder
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 RUN xcaddy build v2.11.7 \
-    --with github.com/caddy-dns/cloudflare \ 
-    --with github.com/caddy-dns/powerdns \
-    --with github.com/ss098/certmagic-s3 \
-    --with github.com/pberkel/caddy-storage-redis \
-    --with github.com/zhangjiayin/caddy-mysql-storage \
-    --with github.com/yroc92/postgres-storage \
-    --with github.com/mholt/caddy-ratelimit \
-    --with github.com/caddyserver/transform-encoder \
-    --with github.com/kassner/caddy-trapdoor \
-    --with github.com/mholt/caddy-l4 \
-    --with github.com/mentimeter/caddy-storage-cf-kv \
-    --with github.com/kirsch33/realip \
-    --with github.com/greenpau/caddy-security \
-    --with github.com/hslatman/caddy-crowdsec-bouncer \
-    --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
+    --with github.com/caddy-dns/cloudflare@v0.2.4 \
+    --with github.com/caddy-dns/powerdns@v1.0.2 \
+    --with github.com/ss098/certmagic-s3@8af482af5f392bcd01b5f3e72653dc24e0b96012 \
+    --with github.com/pberkel/caddy-storage-redis@v1.9.0 \
+    --with github.com/zhangjiayin/caddy-mysql-storage@v1.0 \
+    --with github.com/yroc92/postgres-storage@276797aefe401b738781692d278a158c53b99208 \
+    --with github.com/mholt/caddy-ratelimit@v0.1.0 \
+    --with github.com/caddyserver/transform-encoder@ba4124974830222da7f12a091cf11ddf4d49363f \
+    --with github.com/kassner/caddy-trapdoor@v0.1.2 \
+    --with github.com/mholt/caddy-l4@v0.1.2 \
+    --with github.com/mentimeter/caddy-storage-cf-kv@939ac14649ca537a3cd7108e46cd57cfda593a91 \
+    --with github.com/kirsch33/realip@v1.6.1 \
+    --with github.com/greenpau/caddy-security@v1.6.2 \
+    --with github.com/hslatman/caddy-crowdsec-bouncer@v0.15.0 \
+    --with github.com/lucaslorentz/caddy-docker-proxy/v2@v2.13.1 \
     --output /usr/local/bin/caddy
 
 # Image starts here
