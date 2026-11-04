@@ -10,6 +10,7 @@ variables:
 
 .docker-build:
   stage: build
+  tags: [shared]
   image: docker:27
   services:
     - name: docker:27-dind
