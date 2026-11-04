@@ -1,0 +1,52 @@
+stages:
+  - build
+
+variables:
+  DOCKER_REGISTRY: docker.kirim.email
+  IMAGE: $DOCKER_REGISTRY/$CI_PROJECT_PATH
+  DOCKER_BUILDKIT: "1"
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+
+.docker-build:
+  stage: build
+  image: docker:27
+  services:
+    - name: docker:27-dind
+      alias: docker
+  before_script:
+    - docker version
+    - docker buildx create --use --name builder
+      --driver docker-container || docker buildx use builder
+    - docker buildx inspect --bootstrap
+    - echo "$CI_DEPLOY_TOKEN" | docker login
+      -u "$CI_DEPLOY_USER" --password-stdin
+      "$DOCKER_REGISTRY"
+  script:
+    - docker buildx build
+      --platform linux/amd64,linux/arm64
+      -f "$DOCKERFILE"
+      -t "$IMAGE:$TAG"
+      -t "$IMAGE:$VERSIONED_TAG"
+      --cache-from "type=registry,ref=$IMAGE:buildcache-$TAG"
+      --cache-to "type=registry,ref=$IMAGE:buildcache-$TAG,mode=max"
+      --push .
+  parallel:
+    matrix:
+      - DOCKERFILE: Dockerfile
+        TAG: latest
+        VERSIONED_TAG: 2.11.7
+      - DOCKERFILE: Dockerfile.alpine
+        TAG: alpine
+        VERSIONED_TAG: 2.11.7-alpine
+  rules:
+    # Default branch only: build and push.
+    # No MR builds, no tag builds.
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - Dockerfile
+        - Dockerfile.*
+    - when: never
+
+build:
+  extends: .docker-build
