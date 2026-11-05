@@ -5,7 +5,7 @@ RUN xcaddy build v2.11.7 \
     --with github.com/caddy-dns/powerdns@v1.0.2 \
     --with github.com/ss098/certmagic-s3@8af482af5f392bcd01b5f3e72653dc24e0b96012 \
     --with github.com/pberkel/caddy-storage-redis@v1.9.0 \
-    --with github.com/zhangjiayin/caddy-mysql-storage@v1.0 \
+    --with github.com/zhangjiayin/caddy-mysql-storage@e357109969c843c8876730dbbaa765596edc45ab \
     --with github.com/yroc92/postgres-storage@276797aefe401b738781692d278a158c53b99208 \
     --with github.com/mholt/caddy-ratelimit@v0.1.0 \
     --with github.com/caddyserver/transform-encoder@ba4124974830222da7f12a091cf11ddf4d49363f \
